@@ -1,12 +1,29 @@
 import { exec } from "child_process";
 import fastify, { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
+import { readFile } from "fs";
 import path from "path";
 import { promisify } from "util";
 import { z } from "zod";
-
+import { promises as fsPromises } from "fs";
 
 export async function router(app:FastifyInstance) {
+
+    app.route({
+        method:"GET",
+        url:"/",
+        handler:async (req: FastifyRequest, res: FastifyReply) => {
+            try {
+                const htmlPath = path.join(__dirname, '../frontend', 'index.html');
+                const html = await fsPromises.readFile(htmlPath, 'utf8');
+                res.header('Content-Type', 'text/html'); //garante que o navegador irá interpretar a reposta como sendo html 
+                res.send(html);
+            } catch (err) {
+                console.error(err);
+                res.status(500).send('Internal Server Error');
+            }
+        }
     
+    })
     app.route({
         method:"GET",
         url:"/test/:parameter",
@@ -33,9 +50,7 @@ export async function router(app:FastifyInstance) {
             }
         }
     })
-
-
-
+    
     app.route({
         url:"/image/remove",
         method:"PATCH",
