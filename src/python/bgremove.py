@@ -9,7 +9,7 @@ import os
 parameters = sys.argv[1:]
 
 inputPath = parameters[0]
-outputPath = "./img/"
+outputPath = parameters[1]
 
 file_name = str(uuid.uuid4())
 
