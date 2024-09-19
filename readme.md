@@ -5,8 +5,19 @@ a aplicação se destaca a partir do uso de tecnologias utilizadas no mercado pa
 
 ## Running the package
 
+Setup docker image 
 
-## features estáveis 
+``docker build . -t <choose a name>``
+
+run a container with this image
+
+``docker run <name>``
+
+## Working features 
 
 - Background remove
 - minor image modifications like grayscale, blur and edges. 
+
+# Why Docker
+
+Docker is a fullscale containerization plataform who let's you build apps that will run anywhere (or at least they should). By building a docker app i secure that all the dependencies that my project have will go with him everywhere that my app goes.
