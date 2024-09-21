@@ -88,5 +88,4 @@ export async function router(app:FastifyInstance) {
             }
         }
     })
-
 }
