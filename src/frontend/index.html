@@ -6,64 +6,99 @@
     <title>Document</title>
 </head>
 
-<body>
-    <div id="main">
+<body> 
 
-        <div>
+    <div id="app">
+
+        <div class="card">
             <h2>Remover background</h2>
             <input placeholder="Informe o enderço da imagem" type="text" name="" id="filePath">
+            <label for="outPutPath">enderço de saida</label>
+            <input type="text" name="outPutPath" id="outPutPath" placeholder="enderço de saida">
             <button id="SLA" onclick="main()">Processar Imagem</button>
         </div>
 
+
+        <div class="card">
+            <h2>Aplicar effeitos</h2>
+            <input placeholder="Informe o enderço da imagem" type="text" name="" id="filePath">
+            
+            <label for="outPutPath">enderço de saida</label>
+            <input type="text" name="outPutPath" id="outPutPath" placeholder="enderço de saida">
+            <button id="SLA" onclick="main()">Processar Imagem</button>
+        </div>
+
+        <div class="card">
+            <h2>Remover background</h2>
+            <input placeholder="Informe o enderço da imagem" type="text" name="" id="filePath">
+            <label for="outPutPath">enderço de saida</label>
+            <input type="text" name="outPutPath" id="outPutPath" placeholder="enderço de saida">
+            <button id="SLA" onclick="main()">Processar Imagem</button>
+        </div>
     </div>
 </body>
 <script>
-    
-function main(){
-    const url = 'http://localhost:4545/image/remove';
-    const data={
-        url:document.getElementById("filePath").value 
-    }
-    fetch(url, {
-        method: 'PATCH', // Método HTTP PATCH
-        headers: {
-            'Content-Type': 'application/json', // Especifica o tipo de conteúdo como JSON
-        },
-        body: JSON.stringify(data), // Transforma o objeto 'data' em uma string JSON
-    })
-    .then((response) => {
-        if (!response.ok) {
-        throw new Error('Erro na requisição: ' + response.status);
+
+    function main(){
+        const url = 'http://localhost:4545/image/remove';
+        const data={
+            inputPath:document.getElementById("filePath").value,
+            outputPath:document.getElementById("outPutPath").value
         }
-        return response.json(); // Converte a resposta para JSON
-    })
-    .then((data) => {
-        console.log('Atualização de usuário bem-sucedida:', data); // Processa a resposta da API
-    })
-    .catch((error) => {
-        console.error('Erro:', error); // Trata qualquer erro da requisição
-    });
-    }
+        fetch(url, {
+            method: 'POST', // Método HTTP PATCH
+            headers: {
+                'Content-Type': 'application/json', // Especifica o tipo de conteúdo como JSON
+            },
+            body: JSON.stringify(data), // Transforma o objeto 'data' em uma string JSON
+        }).then(err=>{
+            console.log(err)
+        })
+        }
 </script>
+
+
 <style>
-    body{
+
+    #app{
+        width: 100%;
+        height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
+        flex-direction: row;
+        gap: 5%;
+        flex-wrap: wrap;
+        justify-content: center;
+
     }
-    #main{
-        margin: 10%;
+
+    .card{
         border-radius: 20px;
         border: 1px dashed gray ;
         background-color: rgb(238, 238, 238);
-        width: 60%;
-        height: 600px;
         display: flex;
         flex-direction: column;
         gap: 5%;
         justify-content: center;
         align-items: center;
-        padding: 40px;
+        padding: 60px;
+        width: 300px;
+        gap: 10px;column-gap: 10px;
+        margin: 10px;
+
+    }
+    .card input{
+        width: 90%;
+        outline: none;border: none;
+        height: 30px;text-align: center;
+    }
+    .card button{
+        margin-top: 10px;cursor: pointer;
+        font-size: 20px;font-weight: bold;
+        width: 90%;height: 40px;
+        background-color: rgb(0, 110, 255);
+        border: none;outline: none;color: white;
     }
     h2{ 
         text-align: center;

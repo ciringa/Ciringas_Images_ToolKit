@@ -7,7 +7,10 @@ import { z } from "zod";
 import { promises as fsPromises } from "fs";
 
 export async function router(app:FastifyInstance) {
-
+    app.addHook("preHandler",(req,res,done)=>{
+        console.log(req.method,req.routeConfig.url,req.body,req.params)
+        done()
+    })
     app.route({
         method:"GET",
         url:"/",
@@ -24,48 +27,54 @@ export async function router(app:FastifyInstance) {
         }
     
     })
+
     app.route({
-        method:"GET",
-        url:"/test/:parameter",
-        handler:async (req:FastifyRequest,res:FastifyReply)=>{
-            const {parameter} = z.object({
-                parameter:z.string()
-            }).parse(req.params)
-            //gambiarra abaixo para rodar scripts python
+        url:"/image/apply/effect",
+        method:"post",
+        handler:async(req:FastifyRequest,res:FastifyReply)=>{
+            const {url,effect} = z.object({
+                url:z.string(),
+                effect:z.number()
+            }).parse(req.body)
+            //recurso que converte uma funçao em promessa
             const execPromise = promisify(exec);
-            try {
+            try{
                 // Usando path.join para garantir compatibilidade de caminho entre sistemas operacionais
-                const pythonScriptPath = path.join(__dirname, '../python/test.py');
-                
-                const { stdout, stderr } = await execPromise(`python ${pythonScriptPath} ${parameter}`);
+                const pythonScriptPath = path.join(__dirname, '../python/Effects.py');
+                const ImagePath = path.join(url)
+                //stdout= sucesso stderr = erros 
+                const { stdout, stderr } = await execPromise(`python ${pythonScriptPath} ${ImagePath} ${effect}`);
                 if (stderr) {
                     console.error(`stderr: ${stderr}`);
                     res.status(500).send(`Error: ${stderr}`);
                     return;
                 }
                 res.send(`Result from Python: ${stdout}`);
-            } catch (error) {
+            }catch (error) {
                 console.error(`Error: ${error.message}`);
                 res.status(500).send(`Error: ${error.message}`);
             }
         }
     })
-    
+
+
     app.route({
         url:"/image/remove",
-        method:"PATCH",
+        method:"POST",
         handler:async(req:FastifyRequest,res:FastifyReply)=>{
-            const {url} = z.object({
-                url:z.string()
+            const {inputPath,outputPath} = z.object({
+                inputPath:z.string(),
+                outputPath:z.string()
             }).parse(req.body)
             //recurso que converte uma funçao em promessa
             const execPromise = promisify(exec);
             try{
                 // Usando path.join para garantir compatibilidade de caminho entre sistemas operacionais
-                const pythonScriptPath = path.join(__dirname, '../python/basic.py');
-                const ImagePath = path.join(url)
+                const pythonScriptPath = path.join(__dirname, '../python/bgremove.py');
+                const ImagePath = path.join(inputPath)
+                const exitPath = path.join(outputPath)
                 //stdout= sucesso stderr = erros 
-                const { stdout, stderr } = await execPromise(`python ${pythonScriptPath} ${ImagePath}`);
+                const { stdout, stderr } = await execPromise(`python ${pythonScriptPath} ${ImagePath} ${exitPath}`);
                 if (stderr) {
                     console.error(`stderr: ${stderr}`);
                     res.status(500).send(`Error: ${stderr}`);
