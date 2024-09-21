@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "tsx watch api/app.ts"
+    "start": "tsx watch src/api/app.ts"
   },
   "dependencies": {
     "@fastify/cors": "^9.0.1",
