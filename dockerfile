@@ -1,14 +1,20 @@
 # construir a imagem da aplicação node
-FROM node:18
-#define o diretorio de trabalho
-WORKDIR /api/
-#copia os arquivos para o diretorio de trabalho 
-COPY package*.json ./api
-##instalar as dependencias
+FROM node:20
+
+# define o diretório de trabalho
+WORKDIR /api
+
+# copia os arquivos de dependências para o diretório de trabalho 
+COPY package*.json ./
+
+# instala as dependências
 RUN npm install 
-# copiar o restante do código para o workspace
+
+# copia o restante do código para o workspace
 COPY . .
-# exponha a porta que será utilizada
-EXPOSE 4545
-# Rode a aplicaçao 
-CMD [ "npm", "run" , "dev" ]
+
+# expõe a porta que será utilizada
+EXPOSE 4545:5454
+
+# roda a aplicação
+CMD [ "npm", "start"]
