@@ -8,7 +8,7 @@ import { promises as fsPromises } from "fs";
 
 export async function router(app:FastifyInstance) {
     app.addHook("preHandler",(req,res,done)=>{
-        console.log(req.method,req.routeConfig.url,req.body,req.params)
+        console.log(req.method,req.routeOptions.url,req.body,req.params)
         done()
     })
     app.route({
@@ -32,9 +32,10 @@ export async function router(app:FastifyInstance) {
         url:"/image/apply/effect",
         method:"post",
         handler:async(req:FastifyRequest,res:FastifyReply)=>{
-            const {url,effect} = z.object({
+            const {url,effect,outUrl} = z.object({
                 url:z.string(),
-                effect:z.number()
+                outUrl: z.string(),
+                effect:z.string()
             }).parse(req.body)
             //recurso que converte uma funçao em promessa
             const execPromise = promisify(exec);
@@ -42,8 +43,9 @@ export async function router(app:FastifyInstance) {
                 // Usando path.join para garantir compatibilidade de caminho entre sistemas operacionais
                 const pythonScriptPath = path.join(__dirname, '../python/Effects.py');
                 const ImagePath = path.join(url)
+                const outPath = path.join(outUrl)
                 //stdout= sucesso stderr = erros 
-                const { stdout, stderr } = await execPromise(`python ${pythonScriptPath} ${ImagePath} ${effect}`);
+                const { stdout, stderr } = await execPromise(`python ${pythonScriptPath} ${ImagePath} ${outPath} ${effect}`);
                 if (stderr) {
                     console.error(`stderr: ${stderr}`);
                     res.status(500).send(`Error: ${stderr}`);
@@ -88,5 +90,4 @@ export async function router(app:FastifyInstance) {
             }
         }
     })
-
 }
