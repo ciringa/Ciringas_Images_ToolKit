@@ -11,72 +11,13 @@
     <div id="app">
         <div class="card">
             <h2>Remover background</h2>
-            <input placeholder="Informe o enderço da imagem" type="text" name="" id="filePath">
-            <label for="outPutPath">enderço de saida</label>
-            <input type="text" name="outPutPath" id="outPutPath" placeholder="enderço de saida">
-            <button id="SLA" onclick="BgRemove()">Processar Imagem</button>
-        </div>
-
-
-        <div class="card">
-            <h2>Aplicar effeitos</h2>
-            <input placeholder="Informe o enderço da imagem" type="text" name="" id="filePath2">
-            <select name="" id="EffectList">
-                <option value="1">Grayscale</option>
-                <option value="2">Blur</option>
-                <option value="3">canny</option>
-            </select>
-            <label for="outPutPath2">enderço de saida</label>
-            <input type="text" name="outPutPath2" id="outPutPath2" placeholder="enderço de saida">
-            <button id="Btn2" onclick="applyEffect()">Processar Imagem</button>
-        </div>
-
-        <div class="card">
-            <h2>Alterar Escala</h2>
-            <input placeholder="Informe o enderço da imagem" type="text" name="" id="filePath3">
-            <label for="outPutPath3">enderço de saida</label>
-            <input type="text" name="outPutPath3" id="outPutPath3" placeholder="enderço de saida">
-            <button id="Btn3" >Processar Imagem</button>
+            <form action="http://[::1]:4545/image/file" method="post" enctype="multipart/form-data" id="form3">
+                <input type="file" name="avatar" id="sub_file3">
+                <input type="submit" class="subInputs" value="Processar Imagem">
+            </form>
         </div>
     </div>
 </body>
-<script>
-    function applyEffect(){
-        const url = 'http://localhost:4545/image/apply/effect';
-        const data={
-            url:document.getElementById("filePath2").value,
-            outUrl:document.getElementById("outPutPath2").value,
-            effect:document.getElementById("EffectList").value
-        }
-        fetch(url, {
-            method: 'POST', // Método HTTP PATCH
-            headers: {
-                'Content-Type': 'application/json', // Especifica o tipo de conteúdo como JSON
-            },
-            body: JSON.stringify(data), // Transforma o objeto 'data' em uma string JSON
-        }).then(err=>{
-            console.log(err)
-        })
-    }
-    function BgRemove(){
-        const url = 'http://localhost:4545/image/remove';
-        const data={
-            inputPath:document.getElementById("filePath").value,
-            outputPath:document.getElementById("outPutPath").value
-        }
-        fetch(url, {
-            method: 'POST', // Método HTTP PATCH
-            headers: {
-                'Content-Type': 'application/json', // Especifica o tipo de conteúdo como JSON
-            },
-            body: JSON.stringify(data), // Transforma o objeto 'data' em uma string JSON
-        }).then(err=>{
-            console.log(err)
-        })
-    }
-</script>
-
-
 <style>
 
 #app{
@@ -128,6 +69,13 @@
         text-align: center;
         color: rgb(80, 80, 80);
         font-family: 'Times New Roman', Times, serif;
+    }
+    .subInputs{
+        margin-top: 10px;cursor: pointer;
+        font-size: 20px;font-weight: bold;
+        width: 90%;height: 40px;
+        background-color: rgb(0, 110, 255);
+        border: none;outline: none;color: white;
     }
 </style>
 </html>
