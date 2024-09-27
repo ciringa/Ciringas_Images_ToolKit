@@ -2,11 +2,16 @@ import { exec } from "child_process";
 import { FastifyReply, FastifyRequest } from "fastify";
 import path from "path";
 import { promisify } from "util";
+import { MulterRequest } from "../lib/multer";
+import { effect, z } from "zod";
 
-export async function ApplyEffectController(req:FastifyRequest,res:FastifyReply){
+export async function ApplyEffectController(req:MulterRequest,res:FastifyReply){
     const file = req.file
-    
-    console.log(file)
+    const {Effect}  = z.object({
+        Effect:z.string()
+    }).parse(req.body)
+    //console.log(file)
+
     //recurso que converte uma funçao em promessa
     const execPromise = promisify(exec);
     try{
@@ -16,7 +21,7 @@ export async function ApplyEffectController(req:FastifyRequest,res:FastifyReply)
         const exitPath = path.join("./.temp/images/")
         //stdout= sucesso stderr = erros 
         //abertura do código para o python 
-        const { stdout, stderr } = await execPromise(`python ${pythonScriptPath} ${ImagePath} ${exitPath}`);
+        const { stdout, stderr } = await execPromise(`python ${pythonScriptPath} ${ImagePath} ${exitPath} ${effect}`);
         if (stderr) {
             console.error(`stderr: ${stderr}`);
             res.status(500).send(`Error: ${stderr}`);
@@ -28,6 +33,6 @@ export async function ApplyEffectController(req:FastifyRequest,res:FastifyReply)
         console.error(`Error: ${error.message}`);
         res.status(500).send(`Error: ${error.message}`);
     }
-
+    
     res.redirect("http://[::1]:4545/")
 }

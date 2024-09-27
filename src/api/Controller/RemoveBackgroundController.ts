@@ -3,7 +3,8 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import path from "path";
 import { send } from "process";
 import { promisify } from "util";
-export async function  RemoveFileBg(req:FastifyRequest,res:FastifyReply) {
+import { MulterRequest } from "../lib/multer";
+export async function  RemoveFileBg(req:MulterRequest,res:FastifyReply) {
     const file = req.file
     
     console.log(file)
