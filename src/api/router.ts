@@ -5,6 +5,7 @@ import { GoHome } from "./Controller/GoHomeController";
 
 import { upload } from "./lib/multer";
 import { RemoveFileBg } from "./Controller/RemoveBackgroundController";
+import { ImageTransaformControler } from "./Controller/ImageTransformationController";
 
 export async function router(app:FastifyInstance) {
     app.addHook("preHandler",(req,res,done)=>{
@@ -18,4 +19,5 @@ export async function router(app:FastifyInstance) {
     app.route({method:"POST",url:"/image/file",handler:RemoveFileBg,preHandler:upload.single("avatar")})
     app.route({method:"GET",url:"/home",handler:GoHome})
     app.route({url:"/image/remove",method:"POST",handler:ApplyEffectController})
+    app.route({url:"/image/rescale",method:"POST",handler:ImageTransaformControler,preHandler:upload.single("avatar")})
 }
