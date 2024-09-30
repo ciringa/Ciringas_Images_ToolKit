@@ -14,7 +14,7 @@ if not os.path.exists(Outurl):
     os.makedirs(Outurl)
     
 
-## aumenta ou diminui o tamanh da imagem
+## aumenta ou diminui o tamanho da imagem
 def rescaleFrame(frame,scale):
     width = int(frame.shape[1]*scale);
     height = int(frame.shape[0]*scale);

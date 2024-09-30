@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../../../lib/prisma";
 export async function PostUserController(req:FastifyRequest,res:FastifyReply) {
     const {Email,Password} = z.object({
         Email:z.string().email(),
@@ -13,7 +13,6 @@ export async function PostUserController(req:FastifyRequest,res:FastifyReply) {
                 Email,Password
             }
         })
-
         res.status(201).send({
             Description:"successfully created",
             Response

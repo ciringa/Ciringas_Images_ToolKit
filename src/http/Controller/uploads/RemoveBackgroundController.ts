@@ -3,7 +3,8 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import path from "path";
 import { send } from "process";
 import { promisify } from "util";
-import { MulterRequest } from "../../lib/multer";
+import { MulterRequest } from "../../../lib/multer";
+import { HOST, PORT } from "../../../lib/env";
 export async function  RemoveFileBg(req:MulterRequest,res:FastifyReply) {
     const file = req.file
     
@@ -13,7 +14,7 @@ export async function  RemoveFileBg(req:MulterRequest,res:FastifyReply) {
     const execPromise = promisify(exec);
     try{
         // Usando path.join para garantir compatibilidade de caminho entre sistemas operacionais
-        const pythonScriptPath = path.join(__dirname, '../../python/bgremove.py');
+        const pythonScriptPath = path.join(__dirname, '../../../python/bgremove.py');
         const ImagePath = path.join(file.path)
         const outPath = path.join("./.temp/images/")
         //stdout= sucesso stderr = erros 
@@ -22,11 +23,17 @@ export async function  RemoveFileBg(req:MulterRequest,res:FastifyReply) {
             console.error(`stderr: ${stderr}`);
             res.status(500).send(`Error: ${stderr}`);
             return;
+        }else{
+            res.redirect(`http://${HOST}:${PORT}/`)
+            res.status(201).send({
+                ResultFromPython:stdout,
+                Description:"uploaded and saved image",
+                File:file
+            })
         }
         res.send(`Result from Python: ${stdout}`);
     }catch (error) {
         console.error(`Error: ${error.message}`);
         res.status(500).send(`Error: ${error.message}`);
     }
-    res.redirect("http://[::1]:4545/")
 }
