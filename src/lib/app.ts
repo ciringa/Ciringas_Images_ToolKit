@@ -1,7 +1,7 @@
 import fastify from "fastify";
 import cors from "@fastify/cors"
 import multer from "fastify-multer";
-import { router } from "../router";
+import { router } from "../http/router";
 export const app = fastify()
 
 //register CORS

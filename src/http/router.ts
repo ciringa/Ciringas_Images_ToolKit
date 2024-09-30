@@ -1,11 +1,11 @@
 
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { ApplyEffectController } from "./Controller/ApplyEffectController";
 import { GoHome } from "./Controller/GoHomeController";
+import { RemoveFileBg } from "./Controller/uploads/RemoveBackgroundController";
+import { ApplyEffectController } from "./Controller/uploads/ApplyEffectController";
+import { ImageTransaformControler } from "./Controller/uploads/ImageTransformationController";
+import { upload } from "../lib/multer";
 
-import { upload } from "./lib/multer";
-import { RemoveFileBg } from "./Controller/RemoveBackgroundController";
-import { ImageTransaformControler } from "./Controller/ImageTransformationController";
 
 export async function router(app:FastifyInstance) {
     app.addHook("preHandler",(req,res,done)=>{
