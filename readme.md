@@ -3,7 +3,7 @@ Um pacote de ferramentas para manipulação de imagens usando inteligencia artif
 
 a aplicação se destaca a partir do uso de tecnologias utilizadas no mercado para manipulaçao de imagens como rembg e openCV 
 
-## Running the package
+## Running the package 🚀
 
 Setup docker image 
 
@@ -13,10 +13,16 @@ run a container with this image
 
 ``docker run <name>``
 
-## Working features 
+## Working features 🎁
 
 - Background remove
 - minor image modifications like grayscale, blur and edges. 
+
+## What i've learned? 🤓
+
+- multer and multipart form data request for APIs 
+- Use of python functions inside JS development cenario 
+- Knowledge of python librarys like OpenCV and RemBg
 
 # Why Docker
 
