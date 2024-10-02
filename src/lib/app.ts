@@ -12,10 +12,11 @@ app.register(cors, {
     allowedHeaders: ['Content-Type', 'Authorization'], // Cabeçalhos permitidos
     credentials: true // Permite o envio de cookies e headers de autorização entre o frontend e o backend
 });
+
 app.register(fastifyJwt,{
     secret:"ImagesToolkitLoginAndSingup"
-})
+});
 
-app.register(multer.contentParser)
+app.register(multer.contentParser);
 
-app.register(router)
+app.register(router);
