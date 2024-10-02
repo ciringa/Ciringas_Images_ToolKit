@@ -16,8 +16,8 @@ export async function router(app:FastifyInstance) {
         res.header('Content-Type', 'text/html');
         res.send(`<p>Hey, we are moving to an active FrontEnd. While this new App is not done we can use <a href="http://127.0.0.1:4545/home">this</a></p>`)
     }})
-    app.route({method:"POST",url:"/image/file",handler:RemoveFileBg,preHandler:upload.single("avatar")})
+    app.route({method:"POST",url:"/image/remove",handler:RemoveFileBg,preHandler:upload.single("avatar")})
     app.route({method:"GET",url:"/home",handler:GoHome})
-    app.route({url:"/image/remove",method:"POST",handler:ApplyEffectController})
+    app.route({url:"/image/effect",method:"POST",handler:ApplyEffectController,preHandler:upload.single("avatar")})
     app.route({url:"/image/rescale",method:"POST",handler:ImageTransaformControler,preHandler:upload.single("avatar")})
 }

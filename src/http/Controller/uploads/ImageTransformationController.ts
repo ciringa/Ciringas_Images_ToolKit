@@ -28,8 +28,6 @@ export async function ImageTransaformControler(req:MulterRequest,res:FastifyRepl
             return;
         }else{
             //if logged user, creates an image ref in DB 
-
-            res.redirect(`http://${HOST}:${PORT}/`)
             res.status(201).send({
                 ResultFromPython:stdout,
                 Description:"uploaded and saved image",
