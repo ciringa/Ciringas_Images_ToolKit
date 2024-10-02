@@ -3,6 +3,7 @@ import cors from "@fastify/cors"
 import multer from "fastify-multer";
 import { router } from "../http/router";
 import fastifyJwt from "@fastify/jwt";
+import fastifyCookie from "@fastify/cookie";
 export const app = fastify()
 
 //register CORS
@@ -12,6 +13,8 @@ app.register(cors, {
     allowedHeaders: ['Content-Type', 'Authorization'], // Cabeçalhos permitidos
     credentials: true // Permite o envio de cookies e headers de autorização entre o frontend e o backend
 });
+
+app.register(fastifyCookie,{})
 
 app.register(fastifyJwt,{
     secret:"ImagesToolkitLoginAndSingup"
