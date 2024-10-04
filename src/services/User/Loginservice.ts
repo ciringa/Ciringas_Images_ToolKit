@@ -1,4 +1,3 @@
-import { error } from "console";
 import { prisma } from "../../lib/prisma";
 
 

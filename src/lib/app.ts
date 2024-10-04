@@ -22,4 +22,5 @@ app.register(fastifyJwt,{
 
 app.register(multer.contentParser);
 
+//registra as rotas da aplição 
 app.register(router);

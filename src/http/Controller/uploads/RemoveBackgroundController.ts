@@ -1,9 +1,7 @@
 import { exec } from "child_process";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { send } from "process";
 import { promisify } from "util";
 import { MulterRequest } from "../../../lib/multer";
-import { HOST, PORT } from "../../../lib/env";
 import path from "node:path";
 export async function  RemoveFileBg(req:MulterRequest,res:FastifyReply) {
     const file = req.file
@@ -24,7 +22,6 @@ export async function  RemoveFileBg(req:MulterRequest,res:FastifyReply) {
             res.status(500).send(`Error: ${stderr}`);
             return;
         }else{
-
             res.status(201).send({
                 ResultFromPython:stdout,
                 Description:"uploaded and saved image",
