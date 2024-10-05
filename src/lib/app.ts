@@ -4,6 +4,7 @@ import multer from "fastify-multer";
 import { router } from "../http/router";
 import fastifyJwt from "@fastify/jwt";
 import fastifyCookie from "@fastify/cookie";
+import fastifyMultipart from "@fastify/multipart";
 export const app = fastify()
 
 //register CORS
@@ -20,7 +21,9 @@ app.register(fastifyJwt,{
     secret:"ImagesToolkitLoginAndSingup"
 });
 
-app.register(multer.contentParser);
+app.register(fastifyMultipart)
+
+
 
 //registra as rotas da aplição 
 app.register(router);
