@@ -3,7 +3,7 @@ import { prisma } from "../lib/prisma";
 import { error } from "console";
 
 export class createImageUseCase{
-    async execute(data:Prisma.ImageCreateInput):Promise<Image>{
+    async execute(data:Prisma.ImageUncheckedCreateInput):Promise<Image>{
         const doesTheUserExists = await prisma.image.create({
             data
         })

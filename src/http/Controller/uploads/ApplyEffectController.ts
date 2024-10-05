@@ -5,6 +5,10 @@ import { promisify } from "util";
 import { MulterRequest } from "../../../lib/multer";
 import { effect, z } from "zod";
 import { HOST, PORT } from "../../../lib/env";
+import { IsUserLoggedIn } from "../../midleware/VerifyJWT";
+import { createUserUseCase } from "../../../services/User/CreateUser";
+import { createImageUseCase } from "../../../services/CreateImage";
+import { Image } from "@prisma/client";
 
 export async function ApplyEffectController(req:MulterRequest,res:FastifyReply){
     const file = req.file
@@ -28,18 +32,22 @@ export async function ApplyEffectController(req:MulterRequest,res:FastifyReply){
             console.error(`stderr: ${stderr}`);
             return;
         }else{
-            const {} = z.object({
-                
-            })
+            var newImage:Image|null = null;
+            if(await IsUserLoggedIn(req)){
+                const service = new createImageUseCase()
+                newImage = await service.execute({
+                    Path:req.file.path,
+                    UserId:String(req.cookies.sub)
+                })
+            }
             res.status(201).send({
                 ResultFromPython:stdout,
                 Description:"uploaded and saved image",
-                File:file
+                File:file,
+                ToUser:newImage
             })
         }
     }catch (error) {
-        console.error(`Error: ${error.message}`);
+        console.error(error);
     }
-    
-
 }

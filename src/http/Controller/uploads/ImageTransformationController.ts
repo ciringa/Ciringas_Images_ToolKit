@@ -5,6 +5,9 @@ import path from "path";
 import { z } from "zod";
 import { MulterRequest } from "../../../lib/multer";
 import { HOST, PORT } from "../../../lib/env";
+import { Image } from "@prisma/client";
+import { IsUserLoggedIn } from "../../midleware/VerifyJWT";
+import { createImageUseCase } from "../../../services/CreateImage";
 
 
 export async function ImageTransaformControler(req:MulterRequest,res:FastifyReply) {
@@ -28,14 +31,23 @@ export async function ImageTransaformControler(req:MulterRequest,res:FastifyRepl
             return;
         }else{
             //if logged user, creates an image ref in DB 
+            var newImage:Image|null = null;
+            if(await IsUserLoggedIn(req)){
+                const service = new createImageUseCase()
+                newImage = await service.execute({
+                    Path:req.file.path,
+                    UserId:String(req.cookies.sub)
+                })
+            }
             res.status(201).send({
                 ResultFromPython:stdout,
                 Description:"uploaded and saved image",
-                File:file
+                File:file,
+                ToUser:newImage
             })
         }
     }catch (error) {
-        console.error(`Error: ${error.message}`);
-        res.status(500).send(`Error: ${error.message}`);
+        console.error(`Error: ${error}`);
+        res.status(500).send(`Error: ${error}`);
     }
 }
