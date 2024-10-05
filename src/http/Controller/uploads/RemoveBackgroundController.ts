@@ -1,10 +1,11 @@
 import { exec } from "child_process";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { send } from "process";
 import { promisify } from "util";
 import { MulterRequest } from "../../../lib/multer";
-import { HOST, PORT } from "../../../lib/env";
 import path from "node:path";
+import { Image } from "@prisma/client";
+import { IsUserLoggedIn } from "../../midleware/VerifyJWT";
+import { createImageUseCase } from "../../../services/CreateImage";
 export async function  RemoveFileBg(req:MulterRequest,res:FastifyReply) {
     const file = req.file
     
@@ -24,16 +25,24 @@ export async function  RemoveFileBg(req:MulterRequest,res:FastifyReply) {
             res.status(500).send(`Error: ${stderr}`);
             return;
         }else{
-
+            var newImage:Image|null = null;
+            if(await IsUserLoggedIn(req)){
+                const service = new createImageUseCase()
+                newImage = await service.execute({
+                    Path:req.file.path,
+                    UserId:String(req.cookies.sub)
+                })
+            }
             res.status(201).send({
                 ResultFromPython:stdout,
                 Description:"uploaded and saved image",
-                File:file
+                File:file,
+                ToUser:newImage
             })
         }
         res.send(`Result from Python: ${stdout}`);
     }catch (error) {
-        console.error(`Error: ${error.message}`);
-        res.status(500).send(`Error: ${error.message}`);
+        console.error(`Error: ${error}`);
+        res.status(500).send(`Error: ${error}`);
     }
 }

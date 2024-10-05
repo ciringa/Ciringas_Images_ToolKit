@@ -1,5 +1,5 @@
 import { Prisma, User } from "@prisma/client";
-import { prisma } from "../lib/prisma";
+import { prisma } from "../../lib/prisma";
 
 
 export class createUserUseCase{
