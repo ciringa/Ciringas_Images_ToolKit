@@ -8,6 +8,7 @@ import { HOST, PORT } from "../../../lib/env";
 import { Image } from "@prisma/client";
 import { IsUserLoggedIn } from "../../midleware/VerifyJWT";
 import { createImageUseCase } from "../../../services/CreateImage";
+import { unlinkSync } from "fs";
 
 
 export async function ImageTransaformControler(req:MulterRequest,res:FastifyReply) {
@@ -39,6 +40,8 @@ export async function ImageTransaformControler(req:MulterRequest,res:FastifyRepl
                     UserId:String(req.cookies.sub)
                 })
             }
+            //deletar o arquivo temporario
+            unlinkSync(file.path)
             res.status(201).send({
                 ResultFromPython:stdout,
                 Description:"uploaded and saved image",

@@ -6,6 +6,7 @@ import { ApplyEffectController } from "./Controller/uploads/ApplyEffectControlle
 import { ImageTransaformControler } from "./Controller/uploads/ImageTransformationController";
 import { upload } from "../lib/multer";
 import { LoginController } from "./Controller/User/Login";
+import { GetImagesListWithoutLogin } from "./Controller/Images/getImagesWithoutLogin";
 
 
 export async function router(app:FastifyInstance) {
@@ -20,10 +21,14 @@ export async function router(app:FastifyInstance) {
     //user and commonjs routes
     app.route({method:"PATCH",url:"/users/Login",handler:LoginController});
 
+    //images
+    app.route({method:"GET",url:"/images/return",handler:GetImagesListWithoutLogin})
+    
     //frontend call 
     app.route({method:"GET",url:"/home",handler:GoHome})
     app.route({method:"GET",url:"/",handler:async(req:FastifyRequest,res:FastifyReply)=>{
         res.header('Content-Type', 'text/html');
         res.send(`<p>Hey, we are moving to an active FrontEnd. While this new App is not done we can use <a href="http://127.0.0.1:4545/home">this</a></p>`)
     }});
+
 }

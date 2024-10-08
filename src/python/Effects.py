@@ -8,7 +8,7 @@ parameters = sys.argv[1:]
 input_path = parameters[0]
 output_path = parameters[1]
 effect = int(parameters[2])
-
+Amount = int(parameters[3])
 file_name = str(uuid.uuid4())
 
 
@@ -27,10 +27,10 @@ else:
             img = cv.cvtColor(img,cv.COLOR_BGR2GRAY)
             pass;
         case 2: 
-            img = cv.GaussianBlur(img,(5,5),cv.BORDER_DEFAULT)
+            img = cv.GaussianBlur(img,(Amount,Amount),cv.BORDER_DEFAULT)
             pass
         case 3:
-            img = cv.Canny(img,100,125)
+            img = cv.Canny(img,Amount*10,(Amount*10)+125)
 
     cv.imwrite(os.path.join(output_path,file_name+".png"),img)
     pass
