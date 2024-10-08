@@ -9,14 +9,23 @@ import { IsUserLoggedIn } from "../../midleware/VerifyJWT";
 import { createUserUseCase } from "../../../services/User/CreateUser";
 import { createImageUseCase } from "../../../services/CreateImage";
 import { Image } from "@prisma/client";
+import { unlinkSync } from "fs";
 
 export async function ApplyEffectController(req:MulterRequest,res:FastifyReply){
     const file = req.file
-    const {Effect}  = z.object({
-          Effect:z.string()
+    const {Effect,Amount}  = z.object({
+          Effect:z.string(),
+          Amount:z.string()
       }).parse(req.body)
     // console.log(file)
-
+    switch(Number(Effect)){
+        case 2: if(Number(Amount)>7){
+            res.status(401).send("Amount is out o range");
+        }
+        case 2: if(Number(Amount)>15){
+            res.status(401).send("Amount is out o range");
+        }
+    }
     //recurso que converte uma funçao em promessa
     const execPromise = promisify(exec);
     try{
@@ -24,10 +33,9 @@ export async function ApplyEffectController(req:MulterRequest,res:FastifyReply){
         const pythonScriptPath = path.join(__dirname, '../../../python/Effects.py');
         const ImagePath = path.join(file.path)
         const exitPath = path.join("./.temp/images/")
-
         //stdout= sucesso stderr = erros 
         //abertura do código para o python 
-        const { stdout, stderr } = await execPromise(`python ${pythonScriptPath} ${ImagePath} ${exitPath} ${Effect}`);
+        const { stdout, stderr } = await execPromise(`python ${pythonScriptPath} ${ImagePath} ${exitPath} ${Effect} ${Amount}`);
         if (stderr) {
             console.error(`stderr: ${stderr}`);
             return;
@@ -40,6 +48,8 @@ export async function ApplyEffectController(req:MulterRequest,res:FastifyReply){
                     UserId:String(req.cookies.sub)
                 })
             }
+            //clear file root directory 
+            unlinkSync(file.path)
             res.status(201).send({
                 ResultFromPython:stdout,
                 Description:"uploaded and saved image",

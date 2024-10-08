@@ -6,6 +6,7 @@ import path from "node:path";
 import { Image } from "@prisma/client";
 import { IsUserLoggedIn } from "../../midleware/VerifyJWT";
 import { createImageUseCase } from "../../../services/CreateImage";
+import { unlinkSync } from "fs";
 export async function  RemoveFileBg(req:MulterRequest,res:FastifyReply) {
     const file = req.file
     
@@ -33,6 +34,8 @@ export async function  RemoveFileBg(req:MulterRequest,res:FastifyReply) {
                     UserId:String(req.cookies.sub)
                 })
             }
+            //deletar o arquivo temporario
+            unlinkSync(file.path)
             res.status(201).send({
                 ResultFromPython:stdout,
                 Description:"uploaded and saved image",
