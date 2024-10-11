@@ -12,7 +12,6 @@ app.register(fastifyJwt,{
     secret:"ImagesToolkitLoginAndSingup"
 });
 
-
 //register CORS
 app.register(cors, { 
     origin: true, // Permite todas as origens. Para restringir, você pode especificar uma URL, como 'http://localhost:3000'
