@@ -12,15 +12,11 @@ export async function downloadImage(req:FastifyRequest,res:FastifyReply) {
         const stream = createReadStream(filePath);
         res.header('Content-Type', 'application/octet-stream') // MIME type
         .header(`Content-Disposition`, `attachment; filename="${randomUUID()}.png"`) // Force download
-        .send({
-            fileType:"png",
-            stream}
-        ); // Send the file stream
+        .send(stream); // Send the file stream
     }catch(err){
         if(err){
             console.error(err);
             res.status(500).send(err);
         }
     }
-
 }
