@@ -24,8 +24,48 @@
                 <input type="submit" class="subInputs" value="Processar Imagem">
             </form>
         </div>
+
+        <button id = "btnDownload">baixar</button>
     </div>
 </body>
+<script>
+    const sla = "C:/programaçao/Ciringas_Images_ToolKit/.temp/images/bbae51cd-ee29-43ab-a943-3ead473b6f17.png"
+        
+    async function downloadFile(){
+        try {
+            const url = 'http://127.0.0.1:4545/image/download';
+            const data={
+                filePath:sla
+            }
+            const response = await fetch(url, {
+                method: 'PATCH', // Método HTTP PATCH
+                headers: {
+                    'Content-Type': 'application/json', // Especifica o tipo de conteúdo como JSON
+                },
+                body: JSON.stringify(data), // Transforma o objeto 'data' em uma string JSON
+            })
+            console.log(response)
+            const blob = await response.blob();
+            const Qurl = window.URL.createObjectURL(blob);
+
+            // Create a temporary <a> tag to trigger the download
+            const a = document.createElement('a');
+            a.href = Qurl;
+            a.download = 'example.png'; // File name for download
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Error downloading the file:', error);
+        }
+    };
+    const btnDownload = document.getElementById("btnDownload").addEventListener("click",downloadFile)
+ 
+
+</script>
 <style>
 
     #app{
