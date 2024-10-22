@@ -1,14 +1,29 @@
-# construir a imagem da aplicação node
-FROM node:18
-#define o diretorio de trabalho
+
+# Etapa 1: Construir a imagem da aplicação Node.js
+FROM node:18 AS node-stage
+
+# Definir o diretório de trabalho
 WORKDIR /api/
-#copia os arquivos para o diretorio de trabalho 
-COPY package*.json ./api
-##instalar as dependencias
+
+# Copiar apenas os arquivos de dependências para aproveitar o cache
+COPY package*.json . 
+
+# Instalar as dependências Node.js
 RUN npm install 
-# copiar o restante do código para o workspace
+
+# Copiar o restante do código para o diretório de trabalho
 COPY . .
-# exponha a porta que será utilizada
+
+# Expor a porta que será utilizada pela aplicação Node.js
 EXPOSE 4545
-# Rode a aplicaçao 
-CMD [ "npm", "run" , "dev" ]
+
+# Etapa 2: Instalar dependências Python
+# Atualizar os pacotes e instalar Python3 e pip
+RUN apt-get update && apt-get install -y python3 python3-pip
+
+# Copiar o arquivo de dependências Python e instalar as bibliotecas necessárias
+COPY requirements.txt .
+RUN pip3 install -r requirements.txt
+
+# Definir o comando de execução da aplicação em produção (substituir 'dev' por 'start')
+CMD ["npm", "run", "start"]
