@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { createReadStream } from "fs";
+import { createReadStream, readFile } from "fs";
+import path from "path";
 import { z } from "zod";
 
 export async function downloadImage(req:FastifyRequest,res:FastifyReply) {
@@ -8,11 +9,22 @@ export async function downloadImage(req:FastifyRequest,res:FastifyReply) {
         filePath:z.string(),
     }).parse(req.body)
 
+    const imagePath = path.join(__dirname, filePath); // Caminho da imagem
     try{
-        const stream = createReadStream(filePath);
-        res.header('Content-Type', 'application/octet-stream') // MIME type
-        .header(`Content-Disposition`, `attachment; filename="${randomUUID()}.png"`) // Force download
-        .send(stream); // Send the file stream
+
+
+        // Lê o arquivo da imagem
+        readFile(imagePath, (err, data) => {
+          if (err) {
+            res.status(500).send('Erro ao carregar a imagem');
+            return;
+          }
+
+          // Envia a imagem com o cabeçalho correto
+          res
+            .type('image/jpeg') // Defina o tipo MIME conforme a imagem
+            .send(data);
+        });
     }catch(err){
         if(err){
             console.error(err);

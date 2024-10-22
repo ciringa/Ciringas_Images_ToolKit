@@ -1,4 +1,6 @@
 
+
+
 Um pacote de ferramentas para manipulação de imagens usando inteligencia artifial a partir de bibliotecas pyhton. 
 
 a aplicação se destaca a partir do uso de tecnologias utilizadas no mercado para manipulaçao de imagens como rembg e openCV 
@@ -13,16 +15,23 @@ run a container with this image
 
 ``docker run <name>``
 
+## ChangeLog 1.0.5
+
+- Login/Singup options
+- Reescale features
+
 ## Working features 🎁
 
 - Background remove
 - minor image modifications like grayscale, blur and edges. 
+- Image reescale
 
 ## What i've learned? 🤓
 
-- multer and multipart form data request for APIs 
-- Use of python functions inside JS development cenario 
-- Knowledge of python librarys like OpenCV and RemBg
+- multer and multipart form data request for APIs.
+- Use of python functions inside JS development. 
+- Knowledge of python librarys like OpenCV and RemBg.
+
 
 # Why Docker
 
