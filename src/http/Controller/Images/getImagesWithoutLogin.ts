@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { readdirSync } from "fs";
 import path from "path";
-
+import {dirname} from "path"
 export async function GetImagesListWithoutLogin(req:FastifyRequest,res:FastifyReply) {
     const folder = "C:/programaçao/Ciringas_Images_ToolKit/.temp/images"//add this to request later
     const getImagesFromFolder = async (folderPath:string):Promise<string[]>=>{

@@ -25,49 +25,48 @@
             </form>
         </div>
 
-        <button id = "btnDownload">baixar</button>
+        <div class="card">
+            <button id="test">Testar</button>
+        </div>
     </div>
 </body>
 <script>
-    const sla = "C:/programaçao/Ciringas_Images_ToolKit/.temp/images/bbae51cd-ee29-43ab-a943-3ead473b6f17.png"
-        
-    async function downloadFile(){
-        try {
-            const url = 'http://127.0.0.1:4545/image/download';
-            const data={
-                filePath:sla
-            }
-            const response = await fetch(url, {
-                method: 'PATCH', // Método HTTP PATCH
-                headers: {
+    async function doTest() {
+            try{
+                const url = 'http://127.0.0.1:4545/image/download'
+                const data = {
+                    fileUrl:"C:/programaçao/Ciringas_Images_ToolKit/.temp/images/bbae51cd-ee29-43ab-a943-3ead473b6f17.png"
+                }
+                const request = await fetch(url,{
+                    method:"PATCH",
+                    headers: {
                     'Content-Type': 'application/json', // Especifica o tipo de conteúdo como JSON
-                },
-                body: JSON.stringify(data), // Transforma o objeto 'data' em uma string JSON
-            })
+                    },
+                    body:JSON.stringify(data)
+                })
+                const blob = await request.blob();
+                // Cria um URL para o blob
+                const res_url = window.URL.createObjectURL(blob);
+                // Cria um link temporário para baixar a imagem
+                const link = document.createElement("a");
+                link.href = res_url;
+                link.download = "image.png"; // Nome do arquivo a ser baixado
+                document.body.appendChild(link);
 
-            const blob = await response.blob();
-            const img = new Image()
-            img.src = URL.createObjectURL(blob)
-            URL.revokeObjectURL(img.src)
-            document.getElementById("app").appendChild(img)
-            const Qurl = window.URL.createObjectURL(blob);
-            console.log(img)
-            // Create a temporary <a> tag to trigger the download
-            const a = document.createElement('a');
-            a.href = Qurl;
-            a.download = 'example.png'; // File name for download
-            document.body.appendChild(a);
-            a.click();
+                // Aciona o download
+                link.click();
 
-            // Clean up
-            a.remove();
-            window.URL.revokeObjectURL(Qurl);
-        } catch (error) {
-            console.error('Error downloading the file:', error);
-        }
-    };
-    const btnDownload = document.getElementById("btnDownload").addEventListener("click",downloadFile)
- 
+                // Remove o link temporário
+                document.body.removeChild(link);
+
+                // Libera o URL do Blob para liberar memória
+                window.URL.revokeObjectURL(res_url);
+
+            }catch(err){
+                console.log(err)
+            }
+    }
+    const btnTest = document.getElementById("test").addEventListener("click",doTest)
 
 </script>
 <style>

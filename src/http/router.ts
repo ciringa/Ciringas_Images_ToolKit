@@ -8,6 +8,9 @@ import { upload } from "../lib/multer";
 import { LoginController } from "./Controller/User/Login";
 import { GetImagesListWithoutLogin } from "./Controller/Images/getImagesWithoutLogin";
 import { downloadImage } from "./Controller/Images/download";
+import { ImagesRoutes } from "./routes/images.router";
+import { UserRouter } from "./routes/user.router";
+import { UtilsRoutes } from "./routes/Utils.Router";
 
 
 export async function router(app:FastifyInstance) {
@@ -15,24 +18,16 @@ export async function router(app:FastifyInstance) {
         console.log(req.method,req.routeOptions.url,req.body,req.params)
         done()
     });
-    app.route({method:"POST",url:"/image/remove",handler:RemoveFileBg,preHandler:upload.single("avatar")})
-    app.route({url:"/image/effect",method:"POST",handler:ApplyEffectController,preHandler:upload.single("avatar")})
-    app.route({url:"/image/rescale",method:"POST",handler:ImageTransaformControler,preHandler:upload.single("avatar")})
-
-    //user and commonjs routes
-    app.route({method:"PATCH",url:"/users/Login",handler:LoginController});
-
-    //images
-    app.route({method:"GET",url:"/image/return",handler:GetImagesListWithoutLogin})
-    
-    //frontend call 
-    app.route({method:"GET",url:"/home",handler:GoHome})
-    app.route({method:"GET",url:"/",handler:async(req:FastifyRequest,res:FastifyReply)=>{
-        res.header('Content-Type', 'text/html');
-        res.send(`<p>Hey, we are moving to an active FrontEnd. While this new App is not done we can use <a href="http://127.0.0.1:4545/home">this</a></p>`)
-    }});
-
-    //donwload routes
-    app.route({method:"PATCH",url:"/image/download",handler:downloadImage})
+    app.addHook("onResponse",(req,res,done)=>{
+        console.log(res.statusCode)
+        done()
+    })
+    app.register(ImagesRoutes,{
+        prefix:"/image"
+    })
+    app.register(UserRouter,{
+        prefix:"/user"
+    })
+    app.register(UtilsRoutes,{})
 
 }

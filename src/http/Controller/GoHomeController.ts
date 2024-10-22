@@ -7,7 +7,8 @@ import { promises as fsPromises } from "fs";
 
 export async function GoHome(req:FastifyRequest,res:FastifyReply){
     try {
-        const htmlPath = path.join(__dirname, '../../frontend', 'index.html');
+        const __dirname = "C:/programaçao/Ciringas_Images_ToolKit"
+        const htmlPath = path.join(__dirname,'src/frontend', 'index.html');
         const html = await fsPromises.readFile(htmlPath, 'utf8');
         res.header('Content-Type', 'text/html'); //garante que o navegador irá interpretar a reposta como sendo html 
         res.send(html);
