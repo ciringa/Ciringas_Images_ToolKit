@@ -22,7 +22,7 @@ export async function ApplyEffectController(req:MulterRequest,res:FastifyReply){
         case 2: if(Number(Amount)>7){
             res.status(401).send("Amount is out o range");
         }
-        case 2: if(Number(Amount)>15){
+        case 3: if(Number(Amount)>15){
             res.status(401).send("Amount is out o range");
         }
     }
@@ -51,7 +51,7 @@ export async function ApplyEffectController(req:MulterRequest,res:FastifyReply){
             //clear file root directory 
             unlinkSync(file.path)
             res.status(201).send({
-                ResultFromPython:stdout,
+                ResultFromPython:stdout.replace("\r\n",""),
                 Description:"uploaded and saved image",
                 File:file,
                 ToUser:newImage

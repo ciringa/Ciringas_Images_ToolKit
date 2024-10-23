@@ -43,7 +43,7 @@ export async function ImageTransaformControler(req:MulterRequest,res:FastifyRepl
             //deletar o arquivo temporario
             unlinkSync(file.path)
             res.status(201).send({
-                ResultFromPython:stdout,
+                ResultFromPython:stdout.replace("\r\n",""),
                 Description:"uploaded and saved image",
                 File:file,
                 ToUser:newImage

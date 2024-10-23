@@ -32,5 +32,7 @@ else:
         case 3:
             img = cv.Canny(img,Amount*10,(Amount*10)+125)
 
-    cv.imwrite(os.path.join(output_path,file_name+".png"),img)
+    absolute_path = (os.path.abspath(output_path)+"\ "+file_name+".png").strip()
+    cv.imwrite(absolute_path,img)
+    print(absolute_path)
     pass
