@@ -7,5 +7,6 @@ export const upload = multer({
 
 
 export interface MulterRequest extends FastifyRequest{
+    [x: string]: any;
     file:Express.Multer.File // tipagem de arquivo
 }

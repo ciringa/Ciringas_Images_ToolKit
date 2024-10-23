@@ -20,8 +20,8 @@ input = Image.open(inputPath)
 output = remove(input)
 output.save(os.path.join(outputPath, file_name+".png"))
 
-
-print(parameters[0])
+absolute_path = (os.path.abspath(outputPath)+"\ "+file_name+".png").strip()
+print(absolute_path.strip())
 
 
 #input = Image.open(parameters[0])

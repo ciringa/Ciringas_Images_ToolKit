@@ -3,10 +3,11 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { promisify } from "util";
 import { MulterRequest } from "../../../lib/multer";
 import path from "node:path";
-import { Image } from "@prisma/client";
 import { IsUserLoggedIn } from "../../midleware/VerifyJWT";
 import { createImageUseCase } from "../../../services/CreateImage";
 import { unlinkSync } from "fs";
+import { HOST, PORT } from "../../../lib/env";
+import { Image } from "@prisma/client";
 export async function  RemoveFileBg(req:MulterRequest,res:FastifyReply) {
     const file = req.file
     
@@ -16,7 +17,7 @@ export async function  RemoveFileBg(req:MulterRequest,res:FastifyReply) {
     const execPromise = promisify(exec);
     try{
         // Usando path.join para garantir compatibilidade de caminho entre sistemas operacionais
-        const pythonScriptPath = path.join(__dirname, '../../../python/bgremove.py');
+        const pythonScriptPath = path.join(__dirname,'../../../python/bgremove.py');
         const ImagePath = path.join(file.path)
         const outPath = path.join("./.temp/images/")
         //stdout= sucesso stderr = erros 
@@ -36,8 +37,9 @@ export async function  RemoveFileBg(req:MulterRequest,res:FastifyReply) {
             }
             //deletar o arquivo temporario
             unlinkSync(file.path)
+            // res.redirect(`http://${HOST}:${PORT}/image/download")
             res.status(201).send({
-                ResultFromPython:stdout,
+                ResultFromPython:stdout.replace("\r\n",""),
                 Description:"uploaded and saved image",
                 File:file,
                 ToUser:newImage

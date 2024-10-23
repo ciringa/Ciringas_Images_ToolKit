@@ -27,5 +27,6 @@ img = cv.imread(ImageUrl)
 #cria uma janela aonde mostra a imagem
 img = rescaleFrame(img,scale)
 
-cv.imwrite(os.path.join(Outurl,file_name+".png"),img)
-print("Image Resized")
+absolute_path = (os.path.abspath(Outurl)+"\ "+file_name+".png").strip()
+cv.imwrite(absolute_path,img)
+print(absolute_path)
