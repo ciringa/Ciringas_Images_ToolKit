@@ -1,11 +1,11 @@
 import * as minio from "minio";
 import { createReadStream } from "node:fs";
 import { stat } from "node:fs/promises";
-import { MINIO_HOST, MINIO_PASSWORD, MINIO_PORT, MINIO_USE_SSL, MINIO_USER } from "./env";
+import { MINIO_HOST, MINIO_PASSWORD, MINIO_USE_SSL, MINIO_USER } from "./env";
 
 export const minioClient = new minio.Client({
     endPoint: MINIO_HOST,
-    port: parseInt(MINIO_PORT),
+    port: 9000,
     useSSL: MINIO_USE_SSL,
     accessKey: MINIO_USER,
     secretKey: MINIO_PASSWORD,

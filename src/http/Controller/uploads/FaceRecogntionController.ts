@@ -70,6 +70,6 @@ export async function FaceRecogntionController(req:MulterRequest,res:FastifyRepl
         }
     }catch (error) {
         console.error(`Error: ${error}`);
-        res.status(500).send(`Error: ${error}`);
+        res.status(500).send({ error: "Unable to process image",errorDetails:error });
     }
 }

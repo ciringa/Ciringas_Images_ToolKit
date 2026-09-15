@@ -65,6 +65,6 @@ export async function  RemoveFileBg(req:MulterRequest,res:FastifyReply) {
         res.send(`Result from Python: ${stdout}`);
     }catch (error) {
         console.error(`Error: ${error}`);
-        res.status(500).send(`Error: ${error}`);
+        res.status(500).send({ error: "Unable to process image",errorDetails:error });
     }
 }

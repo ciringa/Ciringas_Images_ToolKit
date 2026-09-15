@@ -8,14 +8,14 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
     ports:
-      - "${POSTGRESQL_PORT}:5432"
+      - "5432:5432"
     restart: unless-stopped
 
   storage:
     image: minio/minio
     command: server /data
     ports:
-      - "${MINIO_PORT}:9000"
+      - "9000:9000"
     environment:
       MINIO_ROOT_USER: ${MINIO_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
@@ -26,7 +26,7 @@ services:
   redis:
     image: redis
     ports:
-      - "${REDIS_PORT}:6379"
+      - "6379:6379"
     restart: unless-stopped
 
   backend:

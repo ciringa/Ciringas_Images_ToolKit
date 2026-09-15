@@ -64,6 +64,6 @@ export async function ApplyEffectController(req:MulterRequest,res:FastifyReply){
         await unlink(file.path).catch(() => undefined);
     }catch (error) {
         console.error(error);
-        res.status(500).send({ error: "Unable to process image" });
+        res.status(500).send({ error: "Unable to process image",errorDetails:error });
     }
 }
